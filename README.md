@@ -113,20 +113,6 @@ kubectl apply -f manifests/apps/
 kubectl apply -f chaos-experiments/network-delay.yaml
 ```
 
-# 🔮 Future Directions
-This research establishes a foundational framework for cloud-native resilience testing that can be extended into several high-impact domains:
-
-### 1. eBPF Integration (Cilium/Pixie):
-Leveraging Extended Berkeley Packet Filters to monitor low-level TCP queue residence times directly within the Linux kernel. This enables deep observability into packet-level congestion during network chaos events, providing microsecond-level accuracy without introducing application or sidecar performance overhead.
-
-### 2. Security Chaos Engineering: 
-Expanding the fault injection scope to security boundaries. This includes the runtime execution of automated failure states targeting cluster access controls, such as dynamically stripping RBAC permissions or injecting unauthenticated rogue pods, to evaluate real-time threat containment and defensive alerting thresholds.
-
-### 3. AI/ML for Chaos Automation: 
-Introducing machine learning models to analyze multi-dimensional Prometheus metrics streams. This allows the system to dynamically compute a moving baseline for the cluster's steady state and automatically adjust the fault injection blast radius depending on active traffic anomalies.
-
-### 4. Resilience in StatefulSets: 
-Deepening validation cycles inside persistent storage layers. Future research will subject managed databases within Kubernetes to volatile stateful disruptions, measuring the exact convergence and consensus recovery rates of protocols like Raft inside etcd under severe multi-node partitions.
 
 # 📄 License
 The source code, automation scripts, and deployment manifests in this repository are licensed under the Apache License 2.0.
