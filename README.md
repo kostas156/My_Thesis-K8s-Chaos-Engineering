@@ -63,15 +63,15 @@ The cluster was hardened by implementing Horizontal Pod Autoscaling (HPA), Pod D
 While the default system completely collapsed, the hardened infrastructure experienced controlled degradation but remained fully functional, preserving a minimum of 50% frontend availability and maintaining **100% availability for vital transactional operations** (e.g., the shopping cart).
 
 #### 🖼️ Chart 1: Availability & System Responsiveness
-![Availability and Latency](images/latency_availability.png)
+![Availability and Latency](images/Availability_Recovery.png)
 *Note: Visualization corresponding to Figure 75 of the thesis. It demonstrates that availability and request fulfillment times recover immediately to steady-state baselines as soon as the fault injection window closes.*
 
 #### 🖼️ Chart 2: Network Throughput Recovery
-![Throughput Recovery](images/network_throughput.png)
+![Throughput Recovery](images/Network_IO_per_Deployment_Recovery.png)
 *Note: Visualization corresponding to Figure 74 of the thesis. In contrast to the complete throughput flatline seen in the default cluster, the optimized system exhibits only a momentary drop and achieves rapid, total recovery.*
 
 #### 🖼️ Chart 3: Cluster Node Resource Consumption (CPU/Memory)
-![Resource Usage](images/resource_usage.png)
+![Resource Usage](images/Resource_Usage_Recovery.png)
 *Note: Visualization corresponding to Figure 76 of the thesis. Captures the automated load balancing, self-healing, and structural resource stabilization across worker Nodes 5 and 6.*
 
 ---
