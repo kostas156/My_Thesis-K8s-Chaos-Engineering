@@ -23,10 +23,14 @@ Google's **Online Boutique** microservices architecture was deployed as the targ
 
 ## 🛠️ Architecture & Technology Stack
 
-* **Infrastructure:** Distributed Kubernetes Cluster (Virtual Machines).
+![Thesis Flow Chart](images/Thesis_Flow_Chart_EN.drawio.png)
+
+* **Infrastructure & Cluster Topology:** Custom, self-hosted distributed Kubernetes cluster built from scratch using a multi-node architecture (1 Control Plane / Master Node and 2 Worker Nodes).
+* **Container Runtime:** `containerd` (configured as the high-performance container runtime interface).
+* **Orchestration:** Kubernetes (K8s v1.22+).
 * **Microservices Application:** Google Cloud Online Boutique (11+ stateless/stateful polyglot microservices).
-* **Chaos Engineering Framework:** Chaos Mesh.
-* **Observability & Monitoring:** Prometheus (metrics collection) & Grafana (visualization and dashboards).
+* **Chaos Engineering Framework:** Chaos Mesh (deployed natively within the cluster for automated fault injection).
+* **Observability & Monitoring:** Prometheus (for timeseries metrics collection scraping the cluster and container runtime) & Grafana (for real-time dashboard visualization).
 
 ---
 
