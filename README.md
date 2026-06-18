@@ -1,5 +1,11 @@
 # Evaluation of Kubernetes Software Reliability Using Chaos Engineering Tools
 
+[![Kubernetes Version](https://img.shields.io/badge/Kubernetes-v1.22%2B-blue?style=flat-square&logo=kubernetes&logoColor=white)](https://kubernetes.io/)
+[![Container Runtime](https://img.shields.io/badge/Container%20Runtime-containerd-emerald?style=flat-square&logo=containerd&logoColor=white)](https://containerd.io/)
+[![Chaos Framework](https://img.shields.io/badge/Chaos%20Framework-Chaos%20Mesh-orange?style=flat-square&logo=chaosmesh&logoColor=white)](https://chaos-mesh.org/)
+[![Infrastructure](https://img.shields.io/badge/Infrastructure-Self--Hosted%20%7C%20Bare--Metal-red?style=flat-square)](https://github.com/)
+[![License](https://img.shields.io/badge/License-Apache%202.0-yellowgreen?style=flat-square&logo=apache&logoColor=white)](LICENSE)
+
 > **Integrated Master's Thesis (2026)** > **Student:** Konstantinos Iatrou (AEM: 58071)  
 > **Academic Supervisor:** Professor Vassilis Tsaoussidis  
 > **Institution:** Democritus University of Thrace, School of Engineering, Department of Electrical and Computer Engineering, Software and Application Development Sector  
