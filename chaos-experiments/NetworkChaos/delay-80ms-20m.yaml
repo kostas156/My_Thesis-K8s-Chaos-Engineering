@@ -1,0 +1,22 @@
+kind: NetworkChaos
+apiVersion: chaos-mesh.org/v1alpha1
+metadata:
+  namespace: online-boutique
+  name: delay-80ms-20m
+spec:
+  selector:
+    namespaces:
+      - online-boutique
+  mode: all
+  action: delay
+  duration: 20m
+  delay:
+    latency: 80ms
+    correlation: '25'
+    jitter: 20ms
+  direction: both
+  target:
+    selector:
+      namespaces:
+        - online-boutique
+    mode: all

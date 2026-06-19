@@ -1,0 +1,14 @@
+kind: PodChaos
+apiVersion: chaos-mesh.org/v1alpha1
+metadata:
+  namespace: online-boutique
+  name: frontend-pod-fail-10m
+spec:
+  selector:
+    namespaces:
+      - online-boutique
+    labelSelectors:
+      app: frontend
+  mode: all
+  action: pod-failure
+  duration: 10m

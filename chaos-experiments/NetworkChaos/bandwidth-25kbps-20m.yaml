@@ -1,0 +1,23 @@
+kind: NetworkChaos
+apiVersion: chaos-mesh.org/v1alpha1
+metadata:
+  namespace: online-boutique
+  name: bandwidth-25kbps-20m
+spec:
+  selector:
+    namespaces:
+      - online-boutique
+  mode: all
+  action: bandwidth
+  duration: 20m
+  bandwidth:
+    rate: 25kbps
+    limit: 8192
+    buffer: 2048
+    minburst: 1500
+  direction: both
+  target:
+    selector:
+      namespaces:
+        - online-boutique
+    mode: all
