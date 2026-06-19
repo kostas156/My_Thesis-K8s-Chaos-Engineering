@@ -29,7 +29,7 @@ Google's **Online Boutique** microservices architecture was deployed as the targ
 
 ## 🛠️ Architecture & Technology Stack
 
-![Thesis Flow Chart](images/Thesis_Flow_Chart_EN.drawio.png)
+![Thesis Flow Chart](docs/images/Thesis_Flow_Chart_EN.drawio.png)
 
 * **Infrastructure & Cluster Topology:** Custom, self-hosted distributed Kubernetes cluster built from scratch using a multi-node architecture (1 Control Plane / Master Node and 2 Worker Nodes).
 * **Container Runtime:** `containerd` (configured as the high-performance container runtime interface).
@@ -73,15 +73,15 @@ The cluster was hardened by implementing Horizontal Pod Autoscaling (HPA), Pod D
 While the default system completely collapsed, the hardened infrastructure experienced controlled degradation but remained fully functional, preserving a minimum of 50% frontend availability and maintaining **100% availability for vital transactional operations** (e.g., the shopping cart).
 
 #### 🖼️ Chart 1: Availability & System Responsiveness
-![Availability and Latency](images/Availability_Recovery.png)
+![Availability and Latency](docs/images/Availability_Recovery.png)
 *Note: Visualization corresponding to Figure 75 of the thesis. It demonstrates that availability and request fulfillment times recover immediately to steady-state baselines as soon as the fault injection window closes.*
 
 #### 🖼️ Chart 2: Network Throughput Recovery
-![Throughput Recovery](images/Network_IO_per_Deployment_Recovery.png)
+![Throughput Recovery](docs/images/Network_IO_per_Deployment_Recovery.png)
 *Note: Visualization corresponding to Figure 74 of the thesis. In contrast to the complete throughput flatline seen in the default cluster, the optimized system exhibits only a momentary drop and achieves rapid, total recovery.*
 
 #### 🖼️ Chart 3: Cluster Node Resource Consumption (CPU/Memory)
-![Resource Usage](images/Resource_Usage_Recovery.png)
+![Resource Usage](docs/images/Resource_Usage_Recovery.png)
 *Note: Visualization corresponding to Figure 76 of the thesis. Captures the automated load balancing, self-healing, and structural resource stabilization across worker Nodes 5 and 6.*
 
 ---
