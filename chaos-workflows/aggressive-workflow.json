@@ -1,0 +1,131 @@
+apiVersion: chaos - mesh.org/v1alpha1
+kind: Workflow
+metadata:
+	name: aggressive-workflow
+	namespace: chaos-mesh
+spec:
+	entry: main
+	templates:
+		- name: main
+		templateType: Serial
+		deadline: 60m
+		children:
+			- warmup
+			- aggressive-network-failure-phase
+			- recovery-intermediate
+			- aggressive-resource-stress-phase
+			- recovery-final
+	
+		# 1. Warmup
+		- name: warmup
+		templateType: Suspend
+		deadline: 10m
+
+		# -------------------------------
+		# ΦΑΣΗ Α: Network Chaos & Pod Kill
+		# -------------------------------
+
+		- name: aggressive-network-failure-phase
+		templateType: Parallel
+		deadline: 10m
+		children:
+		- aggressive-network-delay-frontend
+		- aggressive-network-loss-frontend
+		- aggressive-pod-kill-cart
+
+		- name: aggressive-network-delay-frontend
+		  templateType: NetworkChaos
+		  deadline: 10m
+		  networkChaos:
+			action: delay
+			mode: all
+			direction: to
+			selector:
+				namespaces:
+				   - online-boutique
+				labelSelectors:
+					app: frontend
+				delay:
+					latency: "1s"
+					correlation: "50"
+					jitter: "300ms"
+
+		- name: aggressive-network-loss-frontend
+		  templateType: NetworkChaos
+		  deadline: 10m
+		  networkChaos:
+			action: loss
+			mode: all
+			direction: to
+			selector:
+				namespaces:
+					- online-boutique
+				labelSelectors:
+					app: frontend
+				loss:
+					loss: "7"
+					correlation: "25"
+
+		- name: aggressive-pod-kill-cart
+		  templateType: PodChaos
+		  deadline: 3m
+		  podChaos:
+		  	action: pod-kill
+		  	mode: one
+		  	selector:
+		  		namespaces:
+		  		  - online-boutique
+		  		labelSelectors:
+		  		  app: cartservice
+
+		# 2. Ενδιαμεση Ανάκαμψη
+		- name: recovery-intermediate
+		  templateType: Suspend
+		  deadline: 10m
+
+		# ---------------------------------
+		# ΦΑΣΗ Β: CPU & Memory Stress
+		# ---------------------------------
+
+		- name: aggressive-resource-stress-phase
+		  templateType: Parallel
+		  deadline: 10m
+		  children:
+		    - aggressive-cpu-mem-checkout
+		      templateType: StressChaos
+		      deadline: 10m
+		      stressChaos:
+		        mode: all
+		        selector:
+		          namespaces:
+		            - online-boutique
+		          labelSelectors:
+		            app: checkoutservice
+		        stressors:
+		          cpu:
+		            workers: 2
+		            load: 100
+		          memory:
+		            workers: 1
+		            size: "90MB"
+
+		- name: aggressive-cpu-stress-frontend
+		  templateType: StressChaos
+		  deadline: 10m
+		  stressChaos:
+		    mode: all
+		    selector:
+		      namespaces:
+		        - online-boutique
+		      labelSelectors:
+		        app: frontend
+		    stressors:
+		      cpu:
+		        workers: 2
+		        load: 100
+
+		# 3. Τελική Ανάκαμψη
+		- name: recovery-final
+		  templateType: Suspend
+		  deadline: 10m
+		  
