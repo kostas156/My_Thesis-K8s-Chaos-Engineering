@@ -1,124 +1,154 @@
-# Evaluation of Kubernetes Software Reliability Using Chaos Engineering Tools
+<div align="center">
 
-[![Kubernetes Version](https://img.shields.io/badge/Kubernetes-v1.22%2B-blue?style=flat-square&logo=kubernetes&logoColor=white)](https://kubernetes.io/)
-[![Container Runtime](https://img.shields.io/badge/Container%20Runtime-containerd-emerald?style=flat-square&logo=containerd&logoColor=white)](https://containerd.io/)
-[![Chaos Framework](https://img.shields.io/badge/Chaos%20Framework-Chaos%20Mesh-orange?style=flat-square&logo=chaosmesh&logoColor=white)](https://chaos-mesh.org/)
-[![Infrastructure](https://img.shields.io/badge/Infrastructure-Self--Hosted%20%7C%20Bare--Metal-red?style=flat-square)](https://github.com/)
-[![License](https://img.shields.io/badge/License-Apache%202.0-yellowgreen?style=flat-square&logo=apache&logoColor=white)](LICENSE)
+# 🛡️ Kubernetes Resilience Through Chaos Engineering
 
-> **Integrated Master's Thesis (2026)** > **Student:** Konstantinos Iatrou (AEM: 58071)  
-> **Academic Supervisor:** Professor Vassilis Tsaoussidis  
-> **Institution:** Democritus University of Thrace, School of Engineering, Department of Electrical and Computer Engineering, Software and Application Development Sector  
-> **Based on:** `IatrouK_2026.pdf`
+### Evaluation of Kubernetes Software Reliability Using Chaos Engineering Tools
 
----
+**Integrated Master's Thesis · 2026**  
+**Department of Electrical and Computer Engineering**  
+**Democritus University of Thrace (DUTH)**
 
-## 🎯 Introduction & Research Objectives
+<p>
+  <img alt="Kubernetes" src="https://img.shields.io/badge/Kubernetes-326CE5?style=for-the-badge&logo=kubernetes&logoColor=white" />
+  <img alt="Chaos Mesh" src="https://img.shields.io/badge/Chaos%20Mesh-EF6C35?style=for-the-badge" />
+  <img alt="Cloud Native" src="https://img.shields.io/badge/Cloud--Native-334155?style=for-the-badge" />
+</p>
 
-This thesis investigates the reliability and resilience of distributed systems in Cloud Native environments. Specifically, a full lifecycle of the **Chaos Engineering Methodology** is applied to the **Kubernetes** container orchestration platform to uncover vulnerabilities, quantify system degradation, and implement automated resilience enhancements.
+**Author:** Konstantinos Iatrou  
+**Academic supervisor:** Prof. Vassilis Tsaoussidis
 
-Google's **Online Boutique** microservices architecture was deployed as the target application for all fault injection experiments.
-
-### 🔍 Core Research Questions
-* **Question 1:** What are the system's operational boundaries under severe network congestion and bandwidth limitations?
-* **Question 2:** Are the default Kubernetes self-healing mechanisms sufficient at the Pod level during unexpected failures?
-* **Question 3:** How does resource exhaustion (CPU/Memory throttling, OOM events) impact the stability of co-located services (the *Noisy Neighbor* effect)?
-* **Question 4:** To what extent can supplementary cloud-native mechanisms—such as Horizontal Pod Autoscaling (HPA) and fine-tuned Liveness/Readiness probes—mitigate degradation and accelerate recovery?
+</div>
 
 ---
 
-## 🛠️ Architecture & Technology Stack
+## 📖 Overview
 
-![Thesis Flow Chart](docs/images/Thesis_Flow_Chart_EN.drawio.png)
+This thesis investigates the reliability and resilience of Kubernetes-based microservices through controlled **Chaos Engineering experiments**. The study examines how a containerized application responds to pod failures, network degradation, and resource stress, and evaluates how selected Kubernetes resilience mechanisms affect service behavior and recovery.
 
-* **Infrastructure & Cluster Topology:** Custom, self-hosted distributed Kubernetes cluster built from scratch using a multi-node architecture (1 Control Plane / Master Node and 2 Worker Nodes).
-* **Container Runtime:** `containerd` (configured as the high-performance container runtime interface).
-* **Orchestration:** Kubernetes (K8s v1.22+).
-* **Microservices Application:** Google Cloud Online Boutique (11+ stateless/stateful polyglot microservices).
-* **Chaos Engineering Framework:** Chaos Mesh (deployed natively within the cluster for automated fault injection).
-* **Observability & Monitoring:** Prometheus (for timeseries metrics collection scraping the cluster and container runtime) & Grafana (for real-time dashboard visualization).
+The experimental workload is **Google Cloud's [Online Boutique](https://github.com/GoogleCloudPlatform/microservices-demo)**, deployed on a self-hosted Kubernetes cluster. The work compares the initial deployment configuration with a modified configuration incorporating additional resilience measures.
+
+> **Scope:** An experimental academic study of Kubernetes fault tolerance and recovery, rather than a production-ready chaos-testing platform.
+
+## 🧭 Research Questions
+
+1. How does **network latency and bandwidth restriction** affect end-to-end performance in a microservices application?
+2. How effectively do Kubernetes' built-in mechanisms respond to **pod failures**?
+3. What is the impact of **CPU and memory pressure** on co-located services?
+4. How do **probes, autoscaling, resource policies, and placement strategies** influence degradation and recovery?
+
+## 🏗️ Experimental Environment
+
+| Component | Setup used in the study |
+|:---|:---|
+| Cluster | Self-hosted, multi-node Kubernetes (1 control-plane node and 2 worker nodes) |
+| Container runtime | containerd |
+| Target workload | Google Cloud Online Boutique microservices |
+| Fault injection | Chaos Mesh |
+| Metrics & monitoring | Prometheus and Grafana |
+| Evaluation approach | Baseline experiments followed by experiments with resilience enhancements |
+
+![Experimental workflow and architecture](docs/images/Thesis_Flow_Chart_EN.drawio.png)
+
+<sub>Architecture and experimental workflow from the thesis. The image is displayed if the referenced file is present in the repository.</sub>
+
+## 🧪 Chaos Engineering Experiments
+
+The thesis explores three principal categories of injected faults:
+
+| Category | Experiment focus | Observations of interest |
+|:---|:---|:---|
+| **Pod failures** | Frontend pod termination | Availability, restart behavior, detection and recovery |
+| **Network faults** | Added latency and bandwidth restrictions | Tail latency, throughput, service availability |
+| **Resource stress** | CPU and memory pressure | Resource utilization, throttling, OOM events, service degradation |
+
+The experiments were followed by a comparison with a configuration incorporating resilience improvements, including:
+
+- **Readiness and liveness probe adjustments**
+- **Horizontal Pod Autoscaling (HPA)**
+- **Resource requests and limits**
+- **Pod Disruption Budgets (PDBs)**
+- **Pod anti-affinity policies**
+
+## 📊 Selected Findings
+
+The following figures are **reported in the thesis documentation** and summarize specific experiment settings. They should not be interpreted as performance guarantees for other Kubernetes deployments.
+
+### Network degradation
+
+| Injected condition | Reported observation |
+|:---|:---|
+| **80 ms added network latency** | Frontend p99 response time: **1,291.94 ms** |
+| **300 ms added network latency** | Frontend p99 response time: **4,469.58 ms** |
+| **1 Kbps bandwidth limit** | Reported **88.51% throughput reduction** in the corresponding experiment |
+
+These results illustrate how network-level faults can amplify delays across dependent microservices.
+
+### Baseline vs. resilience-enhanced configuration
+
+In the thesis' *moderate complex scenario* involving the advertisement service, the reported values were:
+
+| Metric | Baseline | Resilience-enhanced |
+|:---|---:|---:|
+| Pod readiness ratio | 0% | 50% |
+| p99 latency | 3,151.54 ms | 2,938.42 ms |
+| Reported CPU-related utilization metric | 5.24% | 1.07% |
+
+**Interpretation:** The resilience-enhanced configuration showed improved readiness and a lower measured p99 latency in this scenario. The CPU-related percentages are reproduced as reported; they are **not** measurements of electrical power consumption. Pod readiness should also not be confused with end-user request availability.
+
+## 📈 Experiment Visualizations
+
+The thesis includes monitoring figures illustrating recovery and resource behavior during fault injection.
+
+<details>
+<summary><strong>📉 Availability and response latency</strong></summary>
+
+![Availability and latency](docs/images/Availability_Recovery.png)
+
+*Availability and latency during an experiment, as presented in the thesis.*
+
+</details>
+
+<details>
+<summary><strong>🌐 Network throughput</strong></summary>
+
+![Network throughput](docs/images/Network_IO_per_Deployment_Recovery.png)
+
+*Network throughput during fault injection and recovery.*
+
+</details>
+
+<details>
+<summary><strong>⚙️ Node CPU and memory metrics</strong></summary>
+
+![Node resource usage](docs/images/Resource_Usage_Recovery.png)
+
+*Worker-node resource metrics during the experiments.*
+
+</details>
+
+## 🧰 Technologies
+
+<p>
+  <img alt="Kubernetes" src="https://img.shields.io/badge/Kubernetes-326CE5?style=flat-square&logo=kubernetes&logoColor=white" />
+  <img alt="containerd" src="https://img.shields.io/badge/containerd-575757?style=flat-square" />
+  <img alt="Chaos Mesh" src="https://img.shields.io/badge/Chaos%20Mesh-EF6C35?style=flat-square" />
+  <img alt="Prometheus" src="https://img.shields.io/badge/Prometheus-E6522C?style=flat-square&logo=prometheus&logoColor=white" />
+  <img alt="Grafana" src="https://img.shields.io/badge/Grafana-F46800?style=flat-square&logo=grafana&logoColor=white" />
+</p>
+
+## 📚 Documentation & Reproducibility
+
+This repository accompanies an **Integrated Master's thesis** on Kubernetes reliability and Chaos Engineering. The numerical results and figures correspond to the original experimental setup; reproducing them requires an appropriately configured Kubernetes environment, compatible software versions, and the relevant workload and experiment configurations.
+
+For the detailed experimental procedure, parameter choices, complete measurements, and limitations, refer to the thesis document (*`IatrouK_2026.pdf`*, if included in the repository).
+
+**Note:** This README does not present unverified shell commands or assume that specific deployment manifests are available. Review the repository's actual files before using them to recreate any experiments.
 
 ---
 
-## 📊 Chaos Experiments & Quantitative Results
+<div align="center">
 
-The research was conducted in two distinct phases: **Initial Execution** (default cluster state) and **Re-execution** (hardened state with advanced resilience configurations).
+**Konstantinos Iatrou**  
+*Democritus University of Thrace · Integrated Master's Thesis (2026)*
 
-### 1. Web Frontend Pod Failure (Pod Failure/Kill)
-* **Problem:** Terminating the frontend pod dropped overall availability to zero. Although Kubernetes initiated 8.5 restarts on average, the service remained unavailable to users for an extended period due to overly conservative default probe intervals.
-* **Mitigation:** Applied precise fine-tuning to the Readiness and Liveness probes to drastically minimize detection and recovery lag.
-
-### 2. Network Experiments (Network Latency & Bandwidth Limitation)
-* **Exponential Latency Amplification:** Introducing a mere **80ms** of artificial network latency caused the end-to-end p99 response time of the frontend to spike to **1291.94ms** due to cascading microservice calls. At **300ms** of injection, the p99 latency escalated to **4469.58ms**, causing cascading timeouts (0% availability).
-* **Bandwidth Throttling:** Restricting the network bandwidth to 1 Kbps triggered partial cluster collapse, a 15,781% increase in response latency (averaging 2.3 seconds), and an 88.51% drop in throughput due to TCP congestion window exhaustion.
-
-### 3. Resource Stress (CPU & Memory Constraint)
-* **Moderate Stress:** Triggered over 2,000 Out-Of-Memory (OOM) events, exposing system-wide weaknesses under high load. CPU utilization surged by 1,242% on the `cartservice` and 4,417% on the `emailservice` (*Noisy Neighbor* phenomenon).
-* **Heavy Stress:** Frontend power consumption spiked by 765.6%, inducing a 58.61% CPU throttle rate.
-
----
-
-## 📈 Before vs. After Resilience Enhancements (Complex Scenarios)
-
-The cluster was hardened by implementing Horizontal Pod Autoscaling (HPA), Pod Disruption Budgets (PDBs), strict Resource Requests/Limits, anti-affinity allocation policies, and optimized Probes.
-
-### Moderate Complex Scenario (Chaos Injection on Advertisement Service)
-| Metric | Baseline Experiment (Default) | Hardened Experiment (Optimized) | Delta / System Benefit |
-| :--- | :---: | :---: | :---: |
-| **Pod Readiness Ratio** | 0% | **50%** | Maintained core functionality (Active replica sustained) |
-| **p99 Latency** | 3151.54 ms | **2938.42 ms** | ~6.7% Performance Improvement |
-| **Power Consumption (CPU)** | 5.24% | **1.07%** | **79.5% more efficient resource utilization** |
-
-### Aggressive Complex Scenario (High Load & Heavy Latency Injection)
-While the default system completely collapsed, the hardened infrastructure experienced controlled degradation but remained fully functional, preserving a minimum of 50% frontend availability and maintaining **100% availability for vital transactional operations** (e.g., the shopping cart).
-
-#### 🖼️ Chart 1: Availability & System Responsiveness
-![Availability and Latency](docs/images/Availability_Recovery.png)
-*Note: Visualization corresponding to Figure 75 of the thesis. It demonstrates that availability and request fulfillment times recover immediately to steady-state baselines as soon as the fault injection window closes.*
-
-#### 🖼️ Chart 2: Network Throughput Recovery
-![Throughput Recovery](docs/images/Network_IO_per_Deployment_Recovery.png)
-*Note: Visualization corresponding to Figure 74 of the thesis. In contrast to the complete throughput flatline seen in the default cluster, the optimized system exhibits only a momentary drop and achieves rapid, total recovery.*
-
-#### 🖼️ Chart 3: Cluster Node Resource Consumption (CPU/Memory)
-![Resource Usage](docs/images/Resource_Usage_Recovery.png)
-*Note: Visualization corresponding to Figure 76 of the thesis. Captures the automated load balancing, self-healing, and structural resource stabilization across worker Nodes 5 and 6.*
-
----
-
-## 📁 Repository Structure
-
-```text
-├── manifests/             # Kubernetes YAML files (Deployments, Services, HPA, PDB)
-├── chaos-experiments/     # Chaos Mesh Custom Resource Definitions (PodChaos, NetworkChaos, StressChaos)
-├── monitoring/            # Prometheus scrape configs & Grafana Dashboard exports
-├── scripts/               # Automation, load generation, and benchmarking scripts (Locust)
-└── README.md              # Project documentation
-```
-
-# 🚀 Usage & Reproduction Guide
-### 1. Install Chaos Mesh
-Ensure your cluster runs Kubernetes v1.22+ and Helm v3 is configured.
-
-```
-helm repo add chaos-mesh [https://charts.chaos-mesh.org](https://charts.chaos-mesh.org)
-helm repo update
-kubectl create ns chaos-testing
-helm install chaos-mesh chaos-mesh/chaos-mesh -n chaos-testing --set dashboard.create=true
-```
-
-### 2. Deploy Hardened Target Application
-```
-# Deploys Online Boutique along with HPA, PDBs, and fine-tuned probes
-kubectl apply -f manifests/apps/
-```
-
-### 3. Trigger a Chaos Experiment
-```
-# Injects the optimized network delay scenario explored in the research
-kubectl apply -f chaos-experiments/network-delay.yaml
-```
-
-
-# 📄 License
-The source code, automation scripts, and deployment manifests in this repository are licensed under the Apache License 2.0.
+</div>
